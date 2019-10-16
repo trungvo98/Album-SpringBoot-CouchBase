@@ -40,4 +40,11 @@ public class Album {
    @Field 
    private List<Song> songList ;
    
+   @Override
+	public String toString() {
+		return "Album [albumId=" + albId + ", name=" + albName + ", author=" + author + ", date=" + date
+				+ "]";
+	}
+	
+   
 }

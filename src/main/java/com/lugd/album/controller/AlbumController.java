@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import com.lugd.album.model.Album;
 import com.lugd.album.repository.AlbumRepository;
+import com.lugd.album.service.AlbumService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AlbumController {
 	
 	@Autowired
-	AlbumRepository albumRepository ;
+	AlbumService  albumService ;
 	
 	
 	@RequestMapping("/")
@@ -29,8 +31,9 @@ public class AlbumController {
 	// get all lists album
 	@GetMapping("/album")
 	public List<Album> fetchAll() {
-		return  (List<Album>) albumRepository.findAll(); 
-	
+		
+		System.out.println(".//////");
+		return  albumService.getAlbums();
 
 	}
 	
@@ -38,12 +41,7 @@ public class AlbumController {
 	@GetMapping("/album/{id}")
 	public Optional<Album> findAlbumById(@PathVariable String id) {
 		int albId=Integer.parseInt(id);
-		if(albumRepository.existsById(albId)) {
-			return albumRepository.findById(albId);
-			
-		}else {
-			return Optional.empty();
-		}
+		return albumService.getAlbumById(albId);
 	}
 	
 	// find album by author 
@@ -56,7 +54,7 @@ public class AlbumController {
 	//create a album 
 	@PutMapping("/album")
 	public Album create (@RequestBody Album newAlbum) {
-		return albumRepository.save(newAlbum);
+		return albumService.addAlbum(newAlbum);
 	}
 	
 	
@@ -85,8 +83,7 @@ public class AlbumController {
 	@DeleteMapping("/album/{id}")
 	public void delete(@PathVariable String id) {
 		int albId=Integer.parseInt(id);
-		 albumRepository.deleteById(albId);
-		
+		 albumService.deleteAlbum(albId);
 	}
 	
 }
